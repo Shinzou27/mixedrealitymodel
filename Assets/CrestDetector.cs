@@ -5,21 +5,30 @@ public class CrestDetector : MonoBehaviour
 {
   public GameObject maquete;
   public InputActionReference triggerSpawn;
+  private GameObject instantiatedCity;
   private void OnCollisionEnter(Collision other)
   {
 
     if (other.gameObject.CompareTag("Crest"))
     {
-      Vector3 spawnPoint = Utils.GetTopCenter(gameObject);
-      Instantiate(maquete, spawnPoint, Quaternion.identity);
+      CreateCity(other.contacts[0].point);
     }
   }
-  void Update()
+  // void Update()
+  // {
+  //   if (triggerSpawn.action.WasPressedThisFrame())
+  //   {
+  //     CreateCity();
+  //   }
+  // }
+  [ContextMenu("CreateCity")]
+  public void CreateCity(Vector3 point)
   {
-    if (triggerSpawn.action.WasPressedThisFrame())
+    if (instantiatedCity)
     {
-      Vector3 spawnPoint = Utils.GetTopCenter(gameObject);
-      Instantiate(maquete, spawnPoint, Quaternion.identity);
+      Destroy(instantiatedCity);
     }
+    // Vector3 spawnPoint = Utils.GetTopCenter(gameObject);
+    instantiatedCity = Instantiate(maquete, point, Quaternion.identity);
   }
 }

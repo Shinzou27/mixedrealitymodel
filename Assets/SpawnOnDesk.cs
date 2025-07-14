@@ -27,14 +27,13 @@ public class SpawnOnDesk : MonoBehaviour
         List<ARPlane> newPlanes = args.added;
         foreach (ARPlane plane in newPlanes)
         {
-            if (plane.classification != classification)
+            Renderer renderer = plane.GetComponent<Renderer>();
+            Destroy(renderer);
+            if (plane.classification == classification)
             {
-                Renderer renderer = plane.GetComponent<Renderer>();
-                Destroy(renderer);
                 plane.AddComponent<CrestDetector>();
                 plane.GetComponent<CrestDetector>().maquete = maquete;
                 plane.GetComponent<CrestDetector>().triggerSpawn = trigger;
-
             }
         }
     }
