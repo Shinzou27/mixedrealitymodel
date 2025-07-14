@@ -1,0 +1,38 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
+
+public class SpawnOnDesk : MonoBehaviour
+{
+    [SerializeField] private ARPlaneManager planeManager;
+    [SerializeField] private PlaneClassification classification;
+    [SerializeField] private GameObject maquete;
+    void OnEnable()
+    {
+        planeManager.planesChanged += SetupPlane;
+    }
+    void OnDisable()
+    {
+        planeManager.planesChanged -= SetupPlane;
+    }
+
+    private void SetupPlane(ARPlanesChangedEventArgs args)
+    {
+        List<ARPlane> newPlanes = args.added;
+        foreach (ARPlane plane in newPlanes)
+        {
+            if (plane.classification != classification)
+            {
+                Renderer renderer = plane.GetComponent<Renderer>();
+                Destroy(renderer);
+                plane.AddComponent<CrestDetector>();
+                plane.GetComponent<CrestDetector>().maquete = maquete;
+
+            }
+        }
+    }
+}
