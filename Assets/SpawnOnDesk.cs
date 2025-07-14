@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
@@ -11,6 +12,7 @@ public class SpawnOnDesk : MonoBehaviour
     [SerializeField] private ARPlaneManager planeManager;
     [SerializeField] private PlaneClassification classification;
     [SerializeField] private GameObject maquete;
+    [SerializeField] private InputActionReference trigger;
     void OnEnable()
     {
         planeManager.planesChanged += SetupPlane;
@@ -31,6 +33,7 @@ public class SpawnOnDesk : MonoBehaviour
                 Destroy(renderer);
                 plane.AddComponent<CrestDetector>();
                 plane.GetComponent<CrestDetector>().maquete = maquete;
+                plane.GetComponent<CrestDetector>().triggerSpawn = trigger;
 
             }
         }
